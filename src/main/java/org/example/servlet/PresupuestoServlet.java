@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.dao.PresupuestoDAO;
 import org.example.model.PresupuestoCategoria;
 
+import java.net.URLEncoder; // Asegúrate de importar esto
+import java.nio.charset.StandardCharsets; // Y esto para StandardCharsets.UTF_8
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -32,6 +35,8 @@ public class PresupuestoServlet extends HttpServlet {
     // Maneja las solicitudes GET (mostrar lista, formulario de edición)
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8"); // ¡AÑADE ESTA LÍNEA si lees parámetros GET con caracteres especiales!
+        response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
 
         if (action != null) {
@@ -54,6 +59,7 @@ public class PresupuestoServlet extends HttpServlet {
     // Maneja las solicitudes POST (añadir, actualizar)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8"); // ¡AÑADE ESTA LÍNEA!
         String action = request.getParameter("action");
 
         if (action == null) {

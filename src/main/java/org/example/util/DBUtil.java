@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class DBUtil {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/hogar_budget?useSSL=false&serverTimezone=UTC";
     private static final String JDBC_USER = "root"; // Cambia por tu usuario de MySQL
-    private static final String JDBC_PASSWORD = "your_password"; // Cambia por tu contraseña de MySQL
+    private static final String JDBC_PASSWORD = "123456"; // Cambia por tu contraseña de MySQL
 
     static {
         try {

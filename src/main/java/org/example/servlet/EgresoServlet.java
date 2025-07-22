@@ -38,6 +38,9 @@ public class EgresoServlet extends HttpServlet {
     // Maneja las solicitudes GET (mostrar lista de egresos para una categoría, formulario de edición)
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8"); // Opcional, si lees parámetros GET con caracteres especiales
+        response.setContentType("text/html;charset=UTF-8"); // ¡AÑADE ESTA LÍNEA!
+        // ... el resto de tu código
         String action = request.getParameter("action");
         String selectedCategory = request.getParameter("categoria"); // Para filtrar egresos por categoría
 
@@ -61,6 +64,7 @@ public class EgresoServlet extends HttpServlet {
     // Maneja las solicitudes POST (añadir, actualizar)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         String selectedCategory = request.getParameter("categoria"); // Categoría seleccionada para el POST
 
