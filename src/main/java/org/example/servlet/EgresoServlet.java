@@ -17,10 +17,15 @@ import org.example.model.PresupuestoCategoria; // Necesario para obtener las cat
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+
+import java.net.URLEncoder; // Para las fechas
+import java.nio.charset.StandardCharsets; // Para las fechas
 
 @WebServlet("/egresos") // Mapea este Servlet a la URL /egresos
 public class EgresoServlet extends HttpServlet {
@@ -38,9 +43,8 @@ public class EgresoServlet extends HttpServlet {
     // Maneja las solicitudes GET (mostrar lista de egresos para una categoría, formulario de edición)
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8"); // Opcional, si lees parámetros GET con caracteres especiales
-        response.setContentType("text/html;charset=UTF-8"); // ¡AÑADE ESTA LÍNEA!
-        // ... el resto de tu código
+        request.setCharacterEncoding("UTF-8"); // Para parámetros GET con caracteres especiales
+        response.setContentType("text/html;charset=UTF-8"); // igual
         String action = request.getParameter("action");
         String selectedCategory = request.getParameter("categoria"); // Para filtrar egresos por categoría
 
@@ -141,7 +145,17 @@ public class EgresoServlet extends HttpServlet {
             BigDecimal monto = new BigDecimal(montoStr);
             Egreso newEgreso = new Egreso(categoria, descripcion, monto);
             egresoDAO.addEgreso(newEgreso);
-            response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + categoria + "&successMessage=Egreso%20añadido%20correctamente.");
+
+            //response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + categoria + "&successMessage=Egreso%20añadido%20correctamente.");
+            // --- APLICANDO EL CAMBIO AQUÍ PARA CODIFICAR LA FECHA---
+            String successMessage = "Egreso añadido correctamente.";
+            String encodedSuccessMessage = URLEncoder.encode(successMessage, StandardCharsets.UTF_8);
+
+            // También debes codificar la categoría si contiene caracteres especiales
+            String encodedCategoria = URLEncoder.encode(categoria, StandardCharsets.UTF_8);
+
+            response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + encodedCategoria + "&successMessage=" + encodedSuccessMessage);
+            // --- FIN DEL CAMBIO ---
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Monto inválido. Debe ser un número.");
             listEgresos(request, response, selectedCategory);
@@ -170,7 +184,18 @@ public class EgresoServlet extends HttpServlet {
 
             Egreso egresoToUpdate = new Egreso(id, categoria, descripcion, monto, fecha);
             egresoDAO.updateEgreso(egresoToUpdate); // Asumiendo que EgresoDAO tiene updateEgreso
-            response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + categoria + "&successMessage=Egreso%20actualizado%20correctamente.");
+
+            //response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + categoria + "&successMessage=Egreso%20actualizado%20correctamente.");
+            // --- APLICANDO EL CAMBIO AQUÍ PARA CODIFICAR LA FECHA---
+            String successMessage = "Egreso actualizado correctamente.";
+            String encodedSuccessMessage = URLEncoder.encode(successMessage, StandardCharsets.UTF_8);
+
+            // También debes codificar la categoría si contiene caracteres especiales
+            String encodedCategoria = URLEncoder.encode(categoria, StandardCharsets.UTF_8);
+
+            response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + encodedCategoria + "&successMessage=" + encodedSuccessMessage);
+            // --- FIN DEL CAMBIO ---
+
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Monto inválido. Debe ser un número.");
             showEditForm(request, response, selectedCategory);
@@ -187,7 +212,17 @@ public class EgresoServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         try {
             egresoDAO.deleteEgreso(id); // Asumiendo que EgresoDAO tiene deleteEgreso
-            response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + selectedCategory + "&successMessage=Egreso%20eliminado%20correctamente.");
+
+            //response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + selectedCategory + "&successMessage=Egreso%20eliminado%20correctamente.");
+            // --- APLICANDO EL CAMBIO AQUÍ ---
+            String successMessage = "Egreso eliminado correctamente.";
+            String encodedSuccessMessage = URLEncoder.encode(successMessage, StandardCharsets.UTF_8);
+
+            // También debes codificar la categoría si contiene caracteres especiales
+            String encodedCategoria = URLEncoder.encode(selectedCategory, StandardCharsets.UTF_8);
+
+            response.sendRedirect(request.getContextPath() + "/egresos?categoria=" + encodedCategoria + "&successMessage=" + encodedSuccessMessage);
+            // --- FIN DEL CAMBIO ---
         } catch (SQLException e) {
             request.setAttribute("errorMessage", "Error al eliminar egreso: " + e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);

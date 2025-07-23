@@ -121,7 +121,13 @@ public class PresupuestoServlet extends HttpServlet {
             BigDecimal montoPresupuestado = new BigDecimal(montoPresupuestadoStr);
             PresupuestoCategoria newCategoria = new PresupuestoCategoria(nombre, montoPresupuestado);
             presupuestoDAO.addCategoria(newCategoria);
-            response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=Categoría%20añadida%20correctamente.");
+            //response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=Categoría%20añadida%20correctamente.");
+            // --- CAMBIO AQUÍ ---
+            String successMessage = "Categoría añadida correctamente.";
+            String encodedSuccessMessage = URLEncoder.encode(successMessage, StandardCharsets.UTF_8);
+            response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=" + encodedSuccessMessage);
+            // --- FIN DEL CAMBIO ---
+
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Monto presupuestado inválido. Debe ser un número.");
             listCategorias(request, response);
@@ -146,7 +152,12 @@ public class PresupuestoServlet extends HttpServlet {
             BigDecimal montoPresupuestado = new BigDecimal(montoPresupuestadoStr);
             PresupuestoCategoria categoriaToUpdate = new PresupuestoCategoria(id, nombre, montoPresupuestado);
             presupuestoDAO.updateCategoria(categoriaToUpdate);
-            response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=Categoría%20actualizada%20correctamente.");
+            //response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=Categoría%20actualizada%20correctamente.");
+            // --- CAMBIO AQUÍ ---
+            String successMessage = "Categoría actualizada correctamente.";
+            String encodedSuccessMessage = URLEncoder.encode(successMessage, StandardCharsets.UTF_8);
+            response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=" + encodedSuccessMessage);
+            // --- FIN DEL CAMBIO ---
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Monto presupuestado inválido. Debe ser un número.");
             showEditForm(request, response);
@@ -160,7 +171,12 @@ public class PresupuestoServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         try {
             presupuestoDAO.deleteCategoria(id);
-            response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=Categoría%20eliminada%20correctamente.");
+            //response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=Categoría%20eliminada%20correctamente.");
+            // --- CAMBIO AQUÍ ---
+            String successMessage = "Categoría eliminada correctamente.";
+            String encodedSuccessMessage = URLEncoder.encode(successMessage, StandardCharsets.UTF_8);
+            response.sendRedirect(request.getContextPath() + "/presupuestos?successMessage=" + encodedSuccessMessage);
+            // --- FIN DEL CAMBIO ---
         } catch (SQLException e) {
             request.setAttribute("errorMessage", "Error al eliminar categoría. Asegúrate de que no haya egresos asociados a ella. " + e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);

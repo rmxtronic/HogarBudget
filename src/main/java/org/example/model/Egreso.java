@@ -8,6 +8,9 @@ package org.example.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import java.time.ZoneId; // Asegúrate de importar esto
+import java.util.Date;   // Asegúrate de importar esto
+
 public class Egreso {
     private int id;
     private String categoria; // La clave foránea lógica a PresupuestoCategoria
@@ -31,6 +34,7 @@ public class Egreso {
         this.fecha = fecha;
     }
 
+
     // Getters y Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -42,4 +46,14 @@ public class Egreso {
     public void setMonto(BigDecimal monto) { this.monto = monto; }
     public LocalDate getFecha() { return fecha; }
     public void setFecha(LocalDate fecha) { this.fecha = fecha; }
+
+    // --- AÑADE O ASEGÚRATE DE QUE ESTE GETTER ESTÉ ASÍ ---
+    public Date getFechaAsUtilDate() {
+        if (this.fecha == null) {
+            return null;
+        }
+        // Convierte LocalDate a java.util.Date para compatibilidad con JSTL
+        return Date.from(this.fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+    // --- FIN DEL GETTER DE CONVERSIÓN ---
 }

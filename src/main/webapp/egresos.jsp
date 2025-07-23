@@ -126,8 +126,8 @@
                                 <td>${egresoItem.id}</td>
                                 <td>${egresoItem.categoria}</td>
                                 <td>${egresoItem.descripcion}</td>
-                                <td><fmt:formatNumber value="${egresoItem.monto}" type="currency" currencySymbol="$" maxFractionDigits="2"/></td>
-                                <td><fmt:formatDate value="${egresoItem.fecha}" pattern="yyyy-MM-dd"/></td>
+                                <td><fmt:formatNumber value="${egresoItem.monto}" type="currency" currencySymbol="$" maxFractionDigits="0"/></td>
+                                <td><fmt:formatDate value="${egresoItem.fechaAsUtilDate}" pattern="yyyy-MM-dd"/></td>
                                 <td class="action-links">
                                     <a href="egresos?action=edit&id=${egresoItem.id}&categoria=${egresoItem.categoria}">Editar</a>
                                     <a href="egresos?action=delete&id=${egresoItem.id}&categoria=${egresoItem.categoria}" class="delete" onclick="return confirm('¿Estás seguro de que quieres eliminar este egreso?');">Eliminar</a>

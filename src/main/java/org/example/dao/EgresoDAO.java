@@ -47,9 +47,6 @@ public class EgresoDAO {
         return egresos;
     }
 
-    // ... (otros métodos como getEgresoById, updateEgreso, deleteEgreso)
-// ... (métodos existentes: addEgreso, getEgresosByCategoria)
-
     // Método para obtener un egreso por ID (para edición)
     public Egreso getEgresoById(int id) throws SQLException {
         String sql = "SELECT id, categoria, descripcion, monto, fecha FROM egresos WHERE id = ?";
